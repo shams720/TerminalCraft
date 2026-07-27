@@ -1,6 +1,6 @@
 # 🐧 TerminalCraft: Ultimate Linux AI Suite
 
-**Live App URL:** [INSERT YOUR LIVE STREAMLIT URL HERE]
+**Live App URL:** [https://terminalcraft-899m9gkcksrkjhcwzuvube.streamlit.app/](https://terminalcraft-899m9gkcksrkjhcwzuvube.streamlit.app/)
 
 ## 💡 The Problem It Solves
 The Linux command line is powerful, but it is easy to make mistakes when translating plain English into exact shell syntax. TerminalCraft helps by generating commands, explaining cryptic syntax, debugging errors, showing dry-run impact scope, and building safer multi-step workflows.
