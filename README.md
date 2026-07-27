@@ -22,24 +22,19 @@ This app uses the **Groq API** with `llama-3.3-70b-versatile` for command genera
 - **Parsing:** Python `re`
 
 ## 📸 Screenshots
-1. **Command Generator**
-   ![Command Generator](INSERT_IMAGE_LINK_1_HERE)
-2. **Error Debugger**
-   ![Error Debugger](INSERT_IMAGE_LINK_2_HERE)
-3. **Pipe & Filter Builder**
-   ![Pipe & Filter Builder](INSERT_IMAGE_LINK_3_HERE)
+
+### 1. Command Generator & Impact Visualizer
+![Command Generator](images/Capture_1.PNG)
+
+### 2. Error Debugger & Stack Trace Diagnosis
+![Error Debugger](images/Capture_2.PNG)
+
+### 3. Interactive Pipe & Filter Builder
+![Pipe Builder](images/Capture_3.PNG)
 
 ## 🚀 How to Run Locally
 ```bash
-git clone [YOUR_REPO_URL]
-cd terminalcraft
+git clone [https://github.com/shams720/TerminalCraft.git](https://github.com/shams720/TerminalCraft.git)
+cd TerminalCraft
 pip install -r requirements.txt
 streamlit run app.py
-```
-
-## 🔐 Local Secrets Setup
-Create a `.streamlit` folder in the project root and add a `secrets.toml` file with your Groq API key:
-
-```toml
-GROQ_API_KEY = "your_api_key_here"
-```

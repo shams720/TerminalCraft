@@ -14,6 +14,9 @@ st.set_page_config(
 if "history" not in st.session_state:
     st.session_state.history = []
 
+if "tab1_result" not in st.session_state:
+    st.session_state.tab1_result = None
+
 # --- SIDEBAR CONFIGURATION ---
 st.sidebar.title("⚙️ Target Environment")
 
@@ -168,17 +171,38 @@ RISK_LEVEL: [LOW / MODERATE / HIGH]
                 text = generate_groq_text(system_prompt, user_input)
                 
                 if text:
+                    local_high_risk_terms = [
+                        "delete everything",
+                        "remove everything",
+                        "recursively delete",
+                        "rm -rf",
+                        "format",
+                        "wipe",
+                        "chmod 777",
+                        "drop all",
+                    ]
+                    requested_text = user_input.lower()
+                    is_local_high_risk = any(term in requested_text for term in local_high_risk_terms)
+
                     # Render Risk Level Badge
-                    if "RISK_LEVEL: HIGH" in text:
+                    if "RISK_LEVEL: HIGH" in text or is_local_high_risk:
+                        risk_level = "HIGH"
                         st.error("🚨 **RISK LEVEL: HIGH / DESTRUCTIVE** — Exercise extreme caution before executing!")
                     elif "RISK_LEVEL: MODERATE" in text:
+                        risk_level = "MODERATE"
                         st.warning("⚠️ **RISK LEVEL: MODERATE** — Modifies system state or configuration.")
                     else:
+                        risk_level = "LOW"
                         st.success("✅ **RISK LEVEL: LOW** — Safe read-only or standard operational command.")
                     
                     # Display output (stripping out raw RISK_LEVEL text)
                     clean_text = re.sub(r"RISK_LEVEL:\s*(LOW|MODERATE|HIGH)", "", text).strip()
                     st.markdown(clean_text)
+
+                    st.session_state.tab1_result = {
+                        "risk_level": risk_level,
+                        "text": clean_text,
+                    }
                     
                     # Save to history
                     cmd = extract_bash_command(clean_text)
@@ -190,6 +214,17 @@ RISK_LEVEL: [LOW / MODERATE / HIGH]
                         "time": datetime.now().strftime("%H:%M:%S")
                     })
                     st.rerun()
+
+    if st.session_state.tab1_result:
+        result = st.session_state.tab1_result
+        if result["risk_level"] == "HIGH":
+            st.error("🚨 **RISK LEVEL: HIGH / DESTRUCTIVE** — Exercise extreme caution before executing!")
+        elif result["risk_level"] == "MODERATE":
+            st.warning("⚠️ **RISK LEVEL: MODERATE** — Modifies system state or configuration.")
+        else:
+            st.success("✅ **RISK LEVEL: LOW** — Safe read-only or standard operational command.")
+
+        st.markdown(result["text"])
 
 # ==========================================
 # TAB 2: COMMAND EXPLAINER & ERROR DEBUGGER
